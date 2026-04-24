@@ -1,17 +1,8 @@
-import Home from "./pages/Home";
-import Chatbot from "./components/Chatbot";
+import Layout from "./components/Layout";
 import "./App.css";
 
 function App() {
-  return (
-    <div>
-      {/* Home Page */}
-      <Home />
-
-      {/* Chatbot appears everywhere */}
-      <Chatbot />
-    </div>
-  );
+  return <Layout />;
 }
 
 export default App;

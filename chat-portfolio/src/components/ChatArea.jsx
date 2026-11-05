@@ -53,9 +53,21 @@ export default function ChatArea() {
         }),
       });
       const data = await res.json();
-      return data?.choices?.[0]?.message?.content || "No response.";
-    } catch {
-      return "Something went wrong ⚠️";
+      if (!res.ok) {
+        throw new Error(data?.error?.message || `Groq request failed (HTTP ${res.status}).`);
+      }
+
+      const content = data?.choices?.[0]?.message?.content;
+      if (typeof content !== "string" || !content.trim()) {
+        throw new Error("Groq returned no message. Check the model and response in your Groq dashboard.");
+      }
+      return content.trim();
+    } catch (error) {
+      console.error("Groq chat request failed:", error);
+      if (error instanceof TypeError) {
+        return "Could not reach Groq. Check your internet connection and browser access to api.groq.com.";
+      }
+      return `Could not get a reply: ${error instanceof Error ? error.message : "Unexpected error."}`;
     }
   };
 

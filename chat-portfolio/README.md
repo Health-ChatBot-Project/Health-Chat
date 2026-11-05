@@ -98,21 +98,27 @@ cd chat-portfolio
 npm install
 ```
 
-### 3. Create `.env` file
+### 3. Configure the Groq API key
+
+For local development, create a `.env` file in `chat-portfolio/`:
 
 ```env
-REACT_APP_GROQ_API_KEY=your_api_key_here
+GROQ_API_KEY=your_api_key_here
 ```
 
-⚠️ Never commit this file to GitHub.
+For Netlify, add `GROQ_API_KEY` under **Site configuration → Environment variables**, then redeploy. The key is used by the Netlify Function and must not be added to a `REACT_APP_` variable or committed to GitHub.
+
+If a key was previously included in frontend code or pushed to GitHub, revoke it in Groq and create a new one.
 
 ---
 
-### 4. Run the project
+### 4. Run the project locally
 
 ```bash
-npm start
+npx netlify-cli dev
 ```
+
+Run this from `chat-portfolio/` so the Netlify Function is available locally.
 
 ---
 

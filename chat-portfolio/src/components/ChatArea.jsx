@@ -38,11 +38,10 @@ export default function ChatArea() {
       const msgs = history.map((m) => ({ role: m.sender === "user" ? "user" : "assistant", content: m.text }));
       msgs.push({ role: "user", content: message });
 
-      const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      const res = await fetch("/.netlify/functions/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.REACT_APP_OPENAI_KEY}`,
         },
         body: JSON.stringify({
           model: "openai/gpt-oss-20b",
@@ -54,7 +53,8 @@ export default function ChatArea() {
       });
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data?.error?.message || `Groq request failed (HTTP ${res.status}).`);
+        const errorMessage = typeof data?.error === "string" ? data.error : data?.error?.message;
+        throw new Error(errorMessage || `Chat request failed (HTTP ${res.status}).`);
       }
 
       const content = data?.choices?.[0]?.message?.content;
@@ -65,7 +65,7 @@ export default function ChatArea() {
     } catch (error) {
       console.error("Groq chat request failed:", error);
       if (error instanceof TypeError) {
-        return "Could not reach Groq. Check your internet connection and browser access to api.groq.com.";
+        return "Could not reach the chat service. Check your internet connection and try again.";
       }
       return `Could not get a reply: ${error instanceof Error ? error.message : "Unexpected error."}`;
     }

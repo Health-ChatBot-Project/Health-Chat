@@ -6,13 +6,7 @@ import "./Layout.css";
 
 export default function Layout() {
   const [activeSection, setActiveSection] = useState("overview");
-  const sectionRefs = {
-    overview: useRef(null),
-    "how-it-works": useRef(null),
-    "ai-model": useRef(null),
-    features: useRef(null),
-    "tech-stack": useRef(null),
-  };
+  const sectionRefs = useRef({});
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -23,12 +17,12 @@ export default function Layout() {
       },
       { threshold: 0.4 }
     );
-    Object.values(sectionRefs).forEach((r) => r.current && observer.observe(r.current));
+    Object.values(sectionRefs.current).forEach((section) => section && observer.observe(section));
     return () => observer.disconnect();
   }, []);
 
   const scrollTo = (id) => {
-    sectionRefs[id]?.current?.scrollIntoView({ behavior: "smooth" });
+    sectionRefs.current[id]?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -43,7 +37,7 @@ export default function Layout() {
 
       <main className="layout-main">
         <div className="content-sections">
-          <section id="overview" ref={sectionRefs["overview"]} className="info-section">
+          <section id="overview" ref={(section) => { sectionRefs.current.overview = section; }} className="info-section">
             <div className="section-badge">Overview</div>
             <h2>Your Personal <span className="gradient-text">Nutrition AI</span></h2>
             <p>
@@ -58,7 +52,7 @@ export default function Layout() {
             </div>
           </section>
 
-          <section id="how-it-works" ref={sectionRefs["how-it-works"]} className="info-section">
+          <section id="how-it-works" ref={(section) => { sectionRefs.current["how-it-works"] = section; }} className="info-section">
             <div className="section-badge">How It Works</div>
             <h2>Simple as <span className="gradient-text">1-2-3</span></h2>
             <div className="steps-grid">
@@ -76,7 +70,7 @@ export default function Layout() {
             </div>
           </section>
 
-          <section id="ai-model" ref={sectionRefs["ai-model"]} className="info-section">
+          <section id="ai-model" ref={(section) => { sectionRefs.current["ai-model"] = section; }} className="info-section">
             <div className="section-badge">AI Model</div>
             <h2>Powered by <span className="gradient-text">Llama 3.1</span></h2>
             <div className="model-card glass-card">
@@ -94,7 +88,7 @@ export default function Layout() {
             </div>
           </section>
 
-          <section id="features" ref={sectionRefs["features"]} className="info-section">
+          <section id="features" ref={(section) => { sectionRefs.current.features = section; }} className="info-section">
             <div className="section-badge">Features</div>
             <h2>Everything You <span className="gradient-text">Need</span></h2>
             <div className="features-grid">
@@ -115,7 +109,7 @@ export default function Layout() {
             </div>
           </section>
 
-          <section id="tech-stack" ref={sectionRefs["tech-stack"]} className="info-section">
+          <section id="tech-stack" ref={(section) => { sectionRefs.current["tech-stack"] = section; }} className="info-section">
             <div className="section-badge">Tech Stack</div>
             <h2>Built With <span className="gradient-text">Modern Tools</span></h2>
             <div className="stack-list">

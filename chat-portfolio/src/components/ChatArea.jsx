@@ -45,7 +45,7 @@ export default function ChatArea() {
           Authorization: `Bearer ${process.env.REACT_APP_OPENAI_KEY}`,
         },
         body: JSON.stringify({
-          model: "llama-3.1-8b-instant",
+          model: "openai/gpt-oss-20b",
           messages: [
             { role: "system", content: "You are a friendly Healthy Eating Assistant. Give short, simple, practical advice about food, diet, and health. Keep responses under 4 sentences. Be warm and encouraging." },
             ...msgs,
